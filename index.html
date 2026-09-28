@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONDO • Specialty Sips & Warm Aesthetic Bites</title>
+  <meta name="description" content="MONDO is a modern Gen Z aesthetic cafe offering artisanal slow brews, iced matcha, handcrafted croffles and cozy vibes.">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Supabase JS Client v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar-ticker">
+    ✨ Free Delivery across town on orders over <strong>Rs. 3,500</strong> • Use code <strong>COZY10</strong> for 10% off your first sip!
+  </div>
+
+  <!-- Header -->
+  
+<header class="mondo-header">
+    <div class="container">
+      <div class="header-content">
+        <!-- Logo & Aesthetic Tag -->
+        <div class="logo-wrap">
+          <a href="#hero" class="brand-logo">MONDO<span class="dot">•</span></a>
+          <span class="brand-badge">slow sips & cozy bites</span>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <ul class="nav-links" id="headerNavLinks">
+          <li><a href="#menu" class="nav-link active">Menu</a></li>
+          <li><a href="#story" class="nav-link">Our Vibe</a></li>
+          <li><a href="#moodboard" class="nav-link">Moodboard</a></li>
+          <li><a href="#feed" class="nav-link">The Feed</a></li>
+          <li><a href="admin.html" class="admin-link-btn" title="Open Staff / Admin Panel"><span>Staff Portal</span> ⚡</a></li>
+        </ul>
+
+        <!-- Header Actions -->
+        <div class="header-actions">
+          <button class="bag-btn js-open-cart" aria-label="Open Shopping Bag">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span>Bag</span>
+            <span class="cart-badge-count" style="display:none;">0</span>
+          </button>
+
+          <button class="mobile-hamburger" id="mobileNavToggle" aria-label="Toggle Navigation Menu">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Hero Left / Story & Intro -->
+        <div class="hero-content">
+          <div class="hero-tagline-wrap">
+            <span class="sparkle">✦</span>
+            <span class="hero-tagline">Artisan Specialty Cafe & Micro-Bakery</span>
+          </div>
+          <h1 class="hero-title">
+            Where mocha warmth meets <span class="pink-highlight">soft pink</span> slow <span class="italic-accent">mornings.</span>
+          </h1>
+          <p class="hero-desc">
+            Carefully extracted blonde espresso, house-whisked strawberry matcha, and warm flaky croffles. MONDO is your cozy sanctuary in the city — crafted for slow sips, deep talks, and endless aesthetic moments.
+          </p>
+          <div class="hero-actions">
+            <a href="#menu" class="btn btn-primary">
+              <span>Order Sips & Bites</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <button class="btn btn-outline" id="vibeGeneratorBtn">
+              <span>🎲 What should I sip today?</span>
+            </button>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="hero-trust-badges">
+            <div class="trust-item">
+              <span class="icon">☕</span>
+              <div>
+                <strong>100% Arabica</strong>
+                <span>Direct single-origin</span>
+              </div>
+            </div>
+            <div class="trust-item">
+              <span class="icon">🍓</span>
+              <div>
+                <strong>Fresh Purées</strong>
+                <span>Never artificial syrups</span>
+              </div>
+            </div>
+            <div class="trust-item">
+              <span class="icon">🛵</span>
+              <div>
+                <strong>Fresh Delivery</strong>
+                <span>Chilled & piping hot</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Right / Pinterest Polaroid Collage -->
+        <div class="hero-collage-wrap" id="moodboard">
+          <div class="sticker-badge sticker-1">
+            <span>✨ 100% Aesthetic Sips</span>
+          </div>
+
+          <div class="polaroid-card polaroid-main">
+            <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=800&q=80" alt="Iced Coffee at MONDO" />
+            <div class="polaroid-caption">specialty iced brew ☕</div>
+          </div>
+
+          <div class="polaroid-card polaroid-side">
+            <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=800&q=80" alt="Ceremonial Matcha" />
+            <div class="polaroid-caption">ceremonial matcha vibes 🍵</div>
+          </div>
+
+          <div class="polaroid-card polaroid-bottom">
+            <img src="https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=800&q=80" alt="Fresh Bakery Treat" />
+            <div class="polaroid-caption">warm golden bakes 🥐</div>
+          </div>
+
+          <div class="sticker-badge sticker-2">
+            <span>mood: slow aesthetic mornings ☁️</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Daily Vibe Recommendation Bar -->
+  <div class="container">
+    <div class="daily-vibe-bar">
+      <div class="vibe-content">
+        <div class="vibe-icon">✨</div>
+        <div class="vibe-text">
+          <h4>Today's Cafe Mood: Slow Mornings & Fresh Coffee</h4>
+          <p>Handcrafted drinks, personalized milk choices & fresh baked treats made to your taste.</p>
+        </div>
+      </div>
+      <button class="vibe-btn" onclick="MondoApp.generateVibeSuggestion()">
+        Surprise My Sip ✨
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Menu Section -->
+  <section class="menu-section" id="menu">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-subtitle">artisan coffee & sweet cravings</span>
+        <h2 class="section-title">The Curated Menu</h2>
+        <p class="section-desc">
+          Crafted with specialty espresso, Japanese ceremonial matcha, and butter-laminated pastry. Every sip and bite is freshly prepared to order.
+        </p>
+      </div>
+
+      <!-- Controls: Search & Category Pills -->
+      <div class="menu-controls">
+        <div class="menu-search-bar">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="menuSearchInput" placeholder="Search drinks, croffles, cookies, matcha..." autocomplete="off">
+        </div>
+
+        <div class="category-filter-bar" id="categoryFilters">
+          <!-- Dynamic Category Pills -->
+        </div>
+      </div>
+
+      <!-- Menu Grid -->
+      <div class="menu-grid" id="menuGrid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Story & Vibe Section -->
+  <section class="story-section" id="story">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-media">
+          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80" alt="MONDO Aesthetic Interior" class="story-img-main" />
+          <div class="story-badge-card">
+            <h4>Slow Coffee Movement</h4>
+            <p>Designed for intimate chats, study dates, and quiet daydreaming over warm ceramic mugs.</p>
+          </div>
+        </div>
+        <div class="story-content">
+          <span class="section-subtitle">the mondo story</span>
+          <h2 class="section-title">Crafted for those who romanticize everyday sips.</h2>
+          <p class="hero-desc">
+            We started MONDO as a love letter to slow mornings. In a bustling city, we wanted to carve out a space grounded in warm mocha tones, gentle pink foams, and rich espresso aromas. 
+          </p>
+          <p class="hero-desc">
+            We don't do mass-produced syrups or powdered mixes. Our matcha comes directly from Uji, Japan; our whole vanilla beans are hand-scraped into daily creams, and our croissants are pressed hot to order.
+          </p>
+          <div class="hero-actions">
+            <a href="admin.html" class="btn btn-outline">
+              <span>Staff Order Portal</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instagram / Pinterest Feed Section -->
+  <section class="vibe-gallery-section" id="feed">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-subtitle">@mondo.pk</span>
+        <h2 class="section-title">The Instagram & Pinterest Feed</h2>
+        <p class="section-desc">Tag us in your stories to be featured on our digital board.</p>
+      </div>
+
+      <div class="instagram-feed-grid">
+        <!-- Post 1 -->
+        <div class="insta-post-card">
+          <div class="insta-post-img-wrap">
+            <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=700&q=80" alt="Tiramisu Latte at MONDO" loading="lazy">
+            <div class="insta-overlay">
+              <button class="gallery-heart-btn" aria-label="Like Post">
+                <span>❤️</span> <span class="heart-count">482</span>
+              </button>
+            </div>
+          </div>
+          <div class="insta-caption-bar">
+            <span>tiramisu foam dreams ✨</span>
+            <small>#mondosips</small>
+          </div>
+        </div>
+
+        <!-- Post 2 -->
+        <div class="insta-post-card">
+          <div class="insta-post-img-wrap">
+            <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=700&q=80" alt="Basque Burnt Cheesecake" loading="lazy">
+            <div class="insta-overlay">
+              <button class="gallery-heart-btn" aria-label="Like Post">
+                <span>❤️</span> <span class="heart-count">319</span>
+              </button>
+            </div>
+          </div>
+          <div class="insta-caption-bar">
+            <span>molten center always 🍰</span>
+            <small>#cheesecake</small>
+          </div>
+        </div>
+
+        <!-- Post 3 -->
+        <div class="insta-post-card">
+          <div class="insta-post-img-wrap">
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=700&q=80" alt="Brown Sugar Shaken Espresso" loading="lazy">
+            <div class="insta-overlay">
+              <button class="gallery-heart-btn" aria-label="Like Post">
+                <span>❤️</span> <span class="heart-count">612</span>
+              </button>
+            </div>
+          </div>
+          <div class="insta-caption-bar">
+            <span>shaken over clear ice 🧊</span>
+            <small>#coldfoam</small>
+          </div>
+        </div>
+
+        <!-- Post 4 -->
+        <div class="insta-post-card">
+          <div class="insta-post-img-wrap">
+            <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=700&q=80" alt="Brown Butter Pistachio Cookie" loading="lazy">
+            <div class="insta-overlay">
+              <button class="gallery-heart-btn" aria-label="Like Post">
+                <span>❤️</span> <span class="heart-count">528</span>
+              </button>
+            </div>
+          </div>
+          <div class="insta-caption-bar">
+            <span>maldon salt + dark choc 🍪</span>
+            <small>#brownbutter</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Side Cart Drawer -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping Bag">
+    <div class="cart-drawer-header">
+      <h3 class="cart-drawer-title">
+        <span>Your Bag</span>
+        <span class="sparkle">☕</span>
+      </h3>
+      <button class="cart-close-btn" id="cartCloseBtn" aria-label="Close Bag">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <!-- Free Delivery Tracker -->
+    <div class="free-delivery-tracker">
+      <div class="free-text" id="freeDeliveryText">
+        Add <strong>Rs. 3,500</strong> to unlock <strong>Free Delivery</strong>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="freeDeliveryBar" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Items List Container -->
+    <div class="cart-drawer-items" id="cartDrawerItems">
+      <!-- Items dynamically added here -->
+    </div>
+
+    <!-- Empty Bag State -->
+    <div class="cart-drawer-empty" id="cartDrawerEmpty">
+      <div class="empty-icon">☕🍃</div>
+      <h4>Your bag is currently empty</h4>
+      <p>Pick a cold foam drink or a warm flaky croffle to treat yourself.</p>
+      <button class="btn btn-outline" onclick="MondoCart.closeDrawer(); window.location.href='#menu';">Explore Menu</button>
+    </div>
+
+    <!-- Summary & Checkout Footer -->
+    <div class="cart-drawer-summary" id="cartDrawerSummary" style="display:none;">
+      <!-- Promo Code Input -->
+      <form class="promo-form-wrap" id="cartPromoForm">
+        <input type="text" id="cartPromoInput" placeholder="Voucher (try COZY10)" maxlength="15">
+        <button type="submit">Apply</button>
+      </form>
+      <div class="applied-promo-tag" id="appliedPromoPill" style="display:none;"></div>
+
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <strong id="cartSubtotalAmount">Rs. 0</strong>
+      </div>
+      <div class="summary-row" id="cartDiscountRow" style="display:none; color: var(--c-pink-deep);">
+        <span>Discount Perk</span>
+        <strong id="cartDiscountAmount">-Rs. 0</strong>
+      </div>
+      <div class="summary-row">
+        <span>Est. Delivery (Town-wide)</span>
+        <strong id="cartDeliveryAmount">Rs. 200</strong>
+      </div>
+      <div class="summary-row total-row">
+        <span>Total Amount</span>
+        <strong id="cartGrandTotalAmount">Rs. 0</strong>
+      </div>
+
+      <button class="btn-checkout" id="cartCheckoutBtn">
+        <span>Proceed to Checkout</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Floating Mobile Cart Pill -->
+  <div class="floating-cart-pill js-open-cart" id="floatingCartPill">
+    <span class="pill-count">0 items</span>
+    <span>View Bag</span>
+    <span class="pill-total">Rs. 0</span>
+  </div>
+
+  <!-- Item Quick Customization Modal -->
+  <div class="modal-backdrop" id="customizationModal">
+    <div class="modal-dialog">
+      <button class="modal-close-icon" id="customizationModalClose" aria-label="Close Modal">✕</button>
+      <div class="custom-modal-header">
+        <img id="modalItemImg" src="" alt="Menu Item Preview">
+      </div>
+      <div class="custom-modal-body">
+        <div class="modal-title-row">
+          <div>
+            <h3 class="modal-title" id="modalItemName">Item Name</h3>
+            <span class="aesthetic-badge" id="modalItemTag">Specialty</span>
+          </div>
+          <div class="modal-price" id="modalItemPrice">Rs. 0</div>
+        </div>
+        <p class="modal-desc" id="modalItemDesc">Item description text.</p>
+
+        <!-- Drink-Specific Customizations -->
+        <div id="modalDrinkOptions">
+          <!-- Milk Choice -->
+          <div class="opt-section">
+            <div class="opt-section-title">
+              <span>Choose Your Milk</span>
+              <small>Required</small>
+            </div>
+            <div class="radio-pills-group">
+              <label class="radio-pill-label">
+                <input type="radio" name="modalMilk" value="Whole Milk" data-extra="0" checked>
+                <div class="radio-pill-content">Whole Milk (+Rs. 0)</div>
+              </label>
+              <label class="radio-pill-label">
+                <input type="radio" name="modalMilk" value="Chilled Oat Milk" data-extra="150">
+                <div class="radio-pill-content">Oat Milk (+Rs. 150)</div>
+              </label>
+              <label class="radio-pill-label">
+                <input type="radio" name="modalMilk" value="Barista Almond Milk" data-extra="150">
+                <div class="radio-pill-content">Almond Milk (+Rs. 150)</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Sweetness Level -->
+          <div class="opt-section">
+            <div class="opt-section-title">
+              <span>Sweetness Preference</span>
+            </div>
+            <div class="radio-pills-group">
+              <label class="radio-pill-label">
+                <input type="radio" name="modalSweet" value="100% Standard" checked>
+                <div class="radio-pill-content">100% (Standard)</div>
+              </label>
+              <label class="radio-pill-label">
+                <input type="radio" name="modalSweet" value="50% Less Sweet">
+                <div class="radio-pill-content">50% (Half Sweet)</div>
+              </label>
+              <label class="radio-pill-label">
+                <input type="radio" name="modalSweet" value="Unsweetened">
+                <div class="radio-pill-content">Unsweetened</div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Ice Level -->
+          <div class="opt-section">
+            <div class="opt-section-title">
+              <span>Ice Level</span>
+            </div>
+            <div class="radio-pills-group">
+              <label class="radio-pill-label">
+                <input type="radio" name="modalIce" value="Regular Ice" checked>
+                <div class="radio-pill-content">Regular Ice</div>
+              </label>
+              <label class="radio-pill-label">
+                <input type="radio" name="modalIce" value="Light Ice">
+                <div class="radio-pill-content">Light Ice</div>
+              </label>
+              <label class="radio-pill-label">
+                <input type="radio" name="modalIce" value="No Ice">
+                <div class="radio-pill-content">No Ice</div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Special Barista Note -->
+        <div class="opt-section" style="border-bottom:none;">
+          <div class="opt-section-title">
+            <span>Special Request / Barista Note</span>
+            <small id="modalItemCalories">Freshly Crafted</small>
+          </div>
+          <textarea id="modalItemNotes" class="opt-textarea" placeholder="e.g., extra cinnamon dusting, extra cup for sharing..."></textarea>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="modal-bottom-bar">
+          <div class="modal-qty-selector">
+            <button type="button" class="qty-btn" id="modalQtyMinus">-</button>
+            <span class="qty-num" id="modalItemQty">1</span>
+            <button type="button" class="qty-btn" id="modalQtyPlus">+</button>
+          </div>
+          <button type="button" class="modal-btn-add" id="modalAddToBagBtn">
+            <span>Add to Bag</span>
+            <span id="modalAddBtnPrice">Rs. 0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal-backdrop" id="checkoutModal">
+    <div class="modal-dialog checkout-dialog">
+      <button class="modal-close-icon" id="checkoutModalClose" aria-label="Close Checkout">✕</button>
+      <div class="checkout-header">
+        <span class="section-subtitle">fast & secure ordering</span>
+        <h3>Complete Your Order</h3>
+        <p style="color:var(--c-text-secondary); font-size:0.9rem;">Freshly handcrafted and dispatched from our MONDO espresso bar.</p>
+      </div>
+
+      <form id="checkoutForm">
+        <!-- Order Type Switch -->
+        <div class="form-group">
+          <label class="form-label">How would you like your order?</label>
+          <div class="order-type-switch">
+            <label class="order-type-label">
+              <input type="radio" name="orderType" value="delivery" checked>
+              <div class="order-type-card">🛵 Delivery</div>
+            </label>
+            <label class="order-type-label">
+              <input type="radio" name="orderType" value="pickup">
+              <div class="order-type-card">🛍️ Takeaway</div>
+            </label>
+            <label class="order-type-label">
+              <input type="radio" name="orderType" value="dine_in">
+              <div class="order-type-card">🪑 Dine-in</div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Customer Name & Phone -->
+        <div class="form-group">
+          <label class="form-label" for="custName">Your Full Name *</label>
+          <input type="text" id="custName" class="form-input" placeholder="e.g., Ayla Khan" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="custPhone">Pakistani Contact Number *</label>
+          <input type="tel" id="custPhone" class="form-input" placeholder="0300-1234567" required>
+        </div>
+
+        <!-- Address (for Delivery) -->
+        <div class="form-group" id="checkoutAddressGroup">
+          <label class="form-label" for="custAddress">Delivery Address in Pakistan *</label>
+          <textarea id="custAddress" class="form-input" style="min-height:75px;" placeholder="House/Apartment #, Street, Block, Area (e.g., Phase 5 DHA, Gulberg, F-7, Clifton)..."></textarea>
+        </div>
+
+        <!-- Table Number (for Dine-in) -->
+        <div class="form-group" id="checkoutTableGroup" style="display:none;">
+          <label class="form-label" for="custTable">Table Number (optional)</label>
+          <input type="text" id="custTable" class="form-input" placeholder="e.g., Table 4 or Patio 2">
+        </div>
+
+        <!-- Special Instructions -->
+        <div class="form-group">
+          <label class="form-label" for="custNotes">Special Instructions (optional)</label>
+          <input type="text" id="custNotes" class="form-input" placeholder="e.g., please call upon arrival, leave at door">
+        </div>
+
+        <!-- Payment Method -->
+        <div class="form-group">
+          <label class="form-label">Payment Option</label>
+          <div class="payment-grid">
+            <label class="payment-label">
+              <input type="radio" name="paymentMethod" value="cash_on_delivery" checked>
+              <div class="payment-pill">
+                <span>💵 Cash on Delivery / Counter</span>
+              </div>
+            </label>
+            <label class="payment-label">
+              <input type="radio" name="paymentMethod" value="nayapay_sadapay">
+              <div class="payment-pill">
+                <span>⚡ NayaPay / SadaPay</span>
+              </div>
+            </label>
+            <label class="payment-label">
+              <input type="radio" name="paymentMethod" value="jazzcash_easypaisa">
+              <div class="payment-pill">
+                <span>📱 JazzCash / Easypaisa</span>
+              </div>
+            </label>
+            <label class="payment-label">
+              <input type="radio" name="paymentMethod" value="card">
+              <div class="payment-pill">
+                <span>💳 Debit / Credit Card</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Review Order Items -->
+        <div class="checkout-review-box">
+          <div id="checkoutItemsList"></div>
+          <hr style="margin:10px 0; border:none; border-top:var(--border-delicate);">
+          <div class="summary-row"><span>Subtotal:</span><strong id="checkoutSubtotal">Rs. 0</strong></div>
+          <div class="summary-row"><span>Delivery:</span><strong id="checkoutDelivery">Rs. 200</strong></div>
+          <div class="summary-row" style="color:var(--c-pink-deep);"><span>Discount:</span><strong id="checkoutDiscount">-Rs. 0</strong></div>
+          <div class="summary-row total-row"><span>Total Payable:</span><strong id="checkoutTotal">Rs. 0</strong></div>
+        </div>
+
+        <button type="submit" class="btn-checkout" id="checkoutSubmitBtn">
+          <span>Confirm & Place Order</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Success Celebration Modal -->
+  <div class="modal-backdrop" id="orderSuccessModal">
+    <div class="modal-dialog success-dialog">
+      <div class="success-icon-wrap">☕✨</div>
+      <span class="section-subtitle">order placed successfully</span>
+      <h3>We're Brewing Your Sips!</h3>
+      <p style="color:var(--c-text-secondary); font-size:0.92rem;">
+        Thank you, <strong id="successCustName">Customer</strong>! Your order has been saved and forwarded directly to the MONDO barista station.
+      </p>
+
+      <div class="order-code-pill" id="successOrderCode">MND-123456</div>
+
+      <!-- Realtime Stepper Simulation -->
+      <div class="success-steps">
+        <div class="step-item active">
+          <div class="step-dot">1</div>
+          <span>Received</span>
+        </div>
+        <div class="step-item active">
+          <div class="step-dot">2</div>
+          <span>Brewing ☕</span>
+        </div>
+        <div class="step-item">
+          <div class="step-dot">3</div>
+          <span>On the Way 🛵</span>
+        </div>
+        <div class="step-item">
+          <div class="step-dot">4</div>
+          <span>Enjoyed 🌸</span>
+        </div>
+      </div>
+
+      <div style="background:var(--c-cream-bg); border-radius:12px; padding:12px; margin-bottom:20px; font-size:0.85rem;">
+        <div>Order Type: <strong id="successOrderType">DELIVERY</strong></div>
+        <div>Total Amount: <strong id="successTotalAmount">Rs. 0</strong></div>
+        <div style="color:var(--c-text-muted); font-size:0.78rem; margin-top:4px;">Estimated arrival: 25-35 minutes</div>
+      </div>
+
+      <button class="btn btn-primary" id="orderSuccessCloseBtn" style="width:100%;">
+        Continue Exploring MONDO
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mondo-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h2>MONDO•</h2>
+          <p>
+            An aesthetic slow coffee bar and artisan micro-bakery. Blending rich single-origin espresso with sweet floral notes and creamy cold foam.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#menu">Our Menu</a></li>
+            <li><a href="#story">The Vibe</a></li>
+            <li><a href="#moodboard">Pinterest Board</a></li>
+            <li><a href="#feed">Instagram Feed</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Cafe Hours</h4>
+          <ul>
+            <li>Monday – Thursday: 8:00 AM – 11:30 PM</li>
+            <li>Friday – Sunday: 8:00 AM – 1:00 AM</li>
+            <li>Direct Delivery: 9:00 AM – 11:00 PM</li>
+            <li>Curbside Pickup: Always Ready</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Staff & Portal</h4>
+          <p style="font-size:0.85rem; margin-bottom:12px; color:var(--c-pink-soft);">
+            Manage orders, update dishes, and sync real-time database in our portal.
+          </p>
+          <a href="admin.html" class="admin-link-btn" style="background:#ffffff; color:var(--c-espresso);">
+            <span>Staff Portal (PIN: mondo123)</span> →
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 MONDO Coffee & Bakes. All rights reserved. Prices in Pakistani Rupees (PKR).</div>
+        <div>Connected with Supabase Cloud Database ⚡</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

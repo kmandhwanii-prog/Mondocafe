@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONDO Staff Portal • Admin & Kitchen Orders</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+
+  <!-- Supabase JS Client v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-body">
+
+  <!-- PIN Security Modal (Overlay) -->
+  <div class="admin-auth-overlay is-visible" id="adminAuthOverlay">
+    <div class="auth-card">
+      <div style="font-size:2.5rem; margin-bottom:12px;">🔒☕</div>
+      <h3>MONDO Staff Access</h3>
+      <p>Please enter your 4-digit or staff PIN code to access the kitchen orders and menu manager.</p>
+      
+      <form id="adminPinForm">
+        <input type="password" id="adminPinInput" class="pin-input" placeholder="••••••••" autofocus autocomplete="off">
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-bottom:12px;">
+          Unlock Portal
+        </button>
+      </form>
+      <div style="font-size:0.8rem; color:#8c766c;">
+        Default Staff PIN: <strong>mondo123</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo-box">
+      <h2>MONDO•</h2>
+      <span>Staff & Kitchen Portal</span>
+    </div>
+
+    <ul class="admin-nav">
+      <li>
+        <button class="admin-nav-item active" data-tab="orders">
+          <span>☕</span>
+          <span>Live Orders</span>
+        </button>
+      </li>
+      <li>
+        <button class="admin-nav-item" data-tab="menu">
+          <span>🍰</span>
+          <span>Menu Manager</span>
+        </button>
+      </li>
+      <li>
+        <button class="admin-nav-item" data-tab="overview">
+          <span>📊</span>
+          <span>Sales & Analytics</span>
+        </button>
+      </li>
+      <li>
+        <button class="admin-nav-item" data-tab="database">
+          <span>⚡</span>
+          <span>Supabase Cloud Sync</span>
+        </button>
+      </li>
+    </ul>
+
+    <div class="admin-sidebar-footer">
+      <a href="index.html" class="store-preview-link">
+        <span>← View Customer Storefront</span>
+      </a>
+      <button onclick="MondoAdmin.logout()" style="background:none; border:none; color:#a89890; font-size:0.8rem; cursor:pointer; text-align:left; padding:4px 0;">
+        Log out staff session
+      </button>
+    </div>
+  </aside>
+
+  <!-- Admin Main Content -->
+  <main class="admin-main">
+    <div class="admin-header-row">
+      <div>
+        <h1 id="adminPageTitle">Kitchen & Barista Orders</h1>
+        <p style="color:#634f46; font-size:0.9rem;">Real-time orders received from the MONDO customer storefront.</p>
+      </div>
+
+      <div class="header-tools">
+        <div class="supabase-badge" id="adminSupabaseIndicator">
+          <span>● Checking Supabase...</span>
+        </div>
+        <button class="btn-refresh" id="adminRefreshBtn" title="Refresh Live Data">
+          🔄 Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1: LIVE ORDERS -->
+    <section class="admin-tab-pane active" id="tab-orders">
+      <!-- Order Filter Pills -->
+      <div class="order-filter-bar">
+        <button class="order-filter-pill active" data-status="all">All Orders</button>
+        <button class="order-filter-pill" data-status="pending">Pending</button>
+        <button class="order-filter-pill" data-status="brewing">Brewing ☕</button>
+        <button class="order-filter-pill" data-status="ready">Ready / En Route 🛵</button>
+        <button class="order-filter-pill" data-status="completed">Completed ✅</button>
+        <button class="order-filter-pill" data-status="cancelled">Cancelled</button>
+      </div>
+
+      <!-- Orders Grid List -->
+      <div class="admin-orders-grid" id="adminOrdersList">
+        <!-- Rendered by admin.js -->
+      </div>
+    </section>
+
+    <!-- TAB 2: MENU ITEM MANAGER -->
+    <section class="admin-tab-pane" id="tab-menu">
+      <div class="menu-table-card">
+        <div class="menu-table-toolbar">
+          <div>
+            <h3 style="font-family:'Playfair Display', serif; font-size:1.4rem;">Menu Catalog & Inventory</h3>
+            <p style="font-size:0.85rem; color:#634f46;">Add, update prices, or toggle daily availability for drinks & bakery treats.</p>
+          </div>
+          <button class="btn btn-primary" id="openAddItemBtn">
+            <span>+ Add New Dish or Drink</span>
+          </button>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th style="width:70px;">Photo</th>
+                <th>Item & Details</th>
+                <th>Category</th>
+                <th>Price (PKR)</th>
+                <th>Stock Status</th>
+                <th style="width:110px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminMenuItemsTable">
+              <!-- Rendered dynamically by admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: OVERVIEW & ANALYTICS -->
+    <section class="admin-tab-pane" id="tab-overview">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-label">Total Revenue</div>
+          <div class="stat-card-value" id="statTotalRevenue">Rs. 0</div>
+          <div class="stat-card-sub">In Pakistani Rupees</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-label">Total Orders</div>
+          <div class="stat-card-value" id="statTotalOrders">0</div>
+          <div class="stat-card-sub">Recorded orders</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-label">Active Brewing Orders</div>
+          <div class="stat-card-value" id="statPendingOrders">0</div>
+          <div class="stat-card-sub">In kitchen queue</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-label">Menu Items</div>
+          <div class="stat-card-value" id="statMenuItems">0</div>
+          <div class="stat-card-sub">Specialty recipes</div>
+        </div>
+      </div>
+
+      <div class="menu-table-card" style="padding:24px;">
+        <h3 style="font-family:'Playfair Display', serif; font-size:1.3rem; margin-bottom:16px;">Recent Incoming Orders</h3>
+        <div id="overviewRecentOrders">
+          <!-- Snippet rendered by admin.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: SUPABASE CLOUD & SQL SETUP -->
+    <section class="admin-tab-pane" id="tab-database">
+      <div class="db-assistant-box">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
+          <div>
+            <h3 style="font-family:'Playfair Display', serif; font-size:1.6rem; color:var(--admin-espresso);">
+              Supabase Cloud Database & Schema
+            </h3>
+            <p style="font-size:0.92rem; color:#634f46;">
+              Connected to project <strong>qgyoekfgdglitxslllry</strong> on Supabase.
+            </p>
+          </div>
+          <button class="btn btn-primary" onclick="MondoAdmin.openAddItemModal()">
+            <span>+ Add New Dish or Drink</span>
+          </button>
+        </div>
+
+        <!-- Health Status Box -->
+        <div id="supabaseStatusDetail">
+          <!-- Rendered by admin.js -->
+        </div>
+
+        <div style="margin-top:28px;">
+          <h4 style="font-size:1.1rem; margin-bottom:8px;">1-Click SQL Schema Setup:</h4>
+          <p style="font-size:0.88rem; color:#634f46; margin-bottom:12px;">
+            If you haven't created the tables in Supabase yet, copy this script and execute it once in your 
+            <a href="https://supabase.com/dashboard/project/qgyoekfgdglitxslllry/sql" target="_blank" style="color:#b35f58; font-weight:700; text-decoration:underline;">
+              Supabase SQL Editor ↗
+            </a>:
+          </p>
+
+          <button class="btn btn-outline" id="copySqlBtn" style="margin-bottom:12px;">
+            <span>📋 Copy Complete SQL Script</span>
+          </button>
+
+          <pre class="sql-code-block">
+-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- 1. MENU ITEMS TABLE
+CREATE TABLE IF NOT EXISTS public.mondo_menu (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    price NUMERIC NOT NULL,
+    description TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    badge_tag TEXT,
+    calories TEXT,
+    is_available BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 2. ORDERS TABLE
+CREATE TABLE IF NOT EXISTS public.mondo_orders (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    order_code TEXT NOT NULL,
+    customer_name TEXT NOT NULL,
+    customer_phone TEXT NOT NULL,
+    order_type TEXT NOT NULL DEFAULT 'delivery',
+    delivery_address TEXT,
+    table_number TEXT,
+    special_notes TEXT,
+    items JSONB NOT NULL,
+    subtotal NUMERIC NOT NULL,
+    delivery_fee NUMERIC DEFAULT 0,
+    discount NUMERIC DEFAULT 0,
+    total_amount NUMERIC NOT NULL,
+    payment_method TEXT NOT NULL DEFAULT 'cash_on_delivery',
+    status TEXT NOT NULL DEFAULT 'pending',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Enable RLS
+ALTER TABLE public.mondo_menu ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.mondo_orders ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public can view menu items" ON public.mondo_menu FOR SELECT USING (true);
+CREATE POLICY "Anon can manage menu items" ON public.mondo_menu FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Anon can insert orders" ON public.mondo_orders FOR INSERT WITH CHECK (true);
+CREATE POLICY "Anon can read orders" ON public.mondo_orders FOR SELECT USING (true);
+CREATE POLICY "Anon can update orders" ON public.mondo_orders FOR UPDATE USING (true) WITH CHECK (true);
+          </pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add / Edit Menu Item Modal -->
+  <div class="modal-backdrop" id="itemModal">
+    <div class="modal-dialog" style="max-width:560px; padding:30px;">
+      <button class="modal-close-icon" id="closeItemModalBtn">✕</button>
+      <h3 id="itemModalTitle" style="font-family:'Playfair Display', serif; font-size:1.6rem; margin-bottom:16px;">
+        Add New Menu Item
+      </h3>
+
+      <form id="itemForm">
+        <div class="form-group">
+          <label class="form-label" for="itemName">Item / Drink Name *</label>
+          <input type="text" id="itemName" class="form-input" placeholder="e.g., Lavender White Mocha" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+          <div class="form-group">
+            <label class="form-label" for="itemCategory">Category *</label>
+            <select id="itemCategory" class="form-input" required>
+              <option value="signature-iced">Signature Iced</option>
+              <option value="espresso-hot">Warm Brews</option>
+              <option value="matcha-tea">Matcha & Teas</option>
+              <option value="bakery-dessert">Artisan Bakery</option>
+              <option value="savory-brunch">Cozy Brunch</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="itemPrice">Price in PKR (Rs.) *</label>
+            <input type="number" id="itemPrice" class="form-input" placeholder="950" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="itemDesc">Flavor Description</label>
+          <textarea id="itemDesc" class="form-input" placeholder="Describe the ingredients, coffee roast notes and aesthetic details..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="itemImgUrl">Image URL (Unsplash or direct image)</label>
+          <input type="url" id="itemImgUrl" class="form-input" placeholder="https://images.unsplash.com/...">
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+          <div class="form-group">
+            <label class="form-label" for="itemBadge">Badge Tag (e.g. Bestseller, Staff Pick)</label>
+            <input type="text" id="itemBadge" class="form-input" placeholder="Bestseller">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="itemCalories">Calories / Prep</label>
+            <input type="text" id="itemCalories" class="form-input" placeholder="190 kcal">
+          </div>
+        </div>
+
+        <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:8px;">
+          <input type="checkbox" id="itemAvailable" checked style="width:18px; height:18px;">
+          <label for="itemAvailable" style="font-size:0.9rem; font-weight:600; cursor:pointer;">
+            Currently In Stock & Available for Order
+          </label>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;">
+          <button type="button" class="btn btn-outline" onclick="MondoAdmin.closeItemModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
